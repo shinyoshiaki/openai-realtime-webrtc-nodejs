@@ -1,6 +1,14 @@
-import { OpusEncoder } from "@discordjs/opus";
+import Speaker from "speaker";
+import opus from "@discordjs/opus";
 
 import { RealtimeWebRTC } from "../../src/index.js";
+
+const encoder = new opus.OpusEncoder(48000, 2);
+const speaker = new Speaker({
+  channels: 2,
+  bitDepth: 16,
+  sampleRate: 48000,
+});
 
 const data = await (await fetch("http://localhost:3000/session")).json();
 console.log(data);
@@ -8,18 +16,27 @@ const {
   client_secret: { value },
 } = data;
 
-const encoder = new OpusEncoder(48000, 1);
-
 const session = await RealtimeWebRTC.init({
   token: value,
   onInboundTrack: (track) => {
     track.onReceiveRtp.subscribe((rtp) => {
       const pcm = encoder.decode(rtp.payload);
-      console.log("pcm", pcm);
+      speaker.write(pcm);
     });
   },
 });
 
 session.datachannel.onmessage = (e) => {
   console.log("datachannel", e.data);
+};
+session.datachannel.onopen = () => {
+  session.datachannel.send(
+    JSON.stringify({
+      type: "response.create",
+      response: {
+        modalities: ["audio", "text"],
+        instructions: "挨拶をしてください",
+      },
+    }),
+  );
 };
