@@ -1,9 +1,10 @@
 import Speaker from "speaker";
 import opus from "@discordjs/opus";
 
-import { OpenAIWebRTC } from "@werift/openai-webrtc";
+import { OpenAIWebRTC } from "../../src/index.js";
+import { createMicOpusStream } from "./mic.js";
 
-const encoder = new opus.OpusEncoder(48000, 2);
+const decoder = new opus.OpusEncoder(48000, 2);
 const speaker = new Speaker({
   channels: 2,
   bitDepth: 16,
@@ -20,7 +21,7 @@ const session = await OpenAIWebRTC.init({
   token: value,
   onInboundTrack: (track) => {
     track.onReceiveRtp.subscribe((rtp) => {
-      const pcm = encoder.decode(rtp.payload);
+      const pcm = decoder.decode(rtp.payload);
       speaker.write(pcm);
     });
   },
@@ -29,6 +30,11 @@ const session = await OpenAIWebRTC.init({
 session.datachannel.onmessage = (e) => {
   console.log("datachannel", e.data);
 };
+
+const mic = createMicOpusStream((opus) => {
+  session.writeOpusFrame(opus);
+});
+
 session.datachannel.onopen = () => {
   session.datachannel.send(
     JSON.stringify({
@@ -39,4 +45,9 @@ session.datachannel.onopen = () => {
       },
     }),
   );
+  mic.start();
+};
+
+session.onclosed = () => {
+  mic.close();
 };

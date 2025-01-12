@@ -2,12 +2,15 @@ import {
   RTCPeerConnection,
   MediaStreamTrack,
   type RTCDataChannel,
+  RtpBuilder,
 } from "werift";
 
 export class OpenAIWebRTC {
   readonly pc = new RTCPeerConnection();
   readonly outboundTrack = new MediaStreamTrack({ kind: "audio" });
   readonly datachannel: RTCDataChannel;
+  onclosed: () => any = () => {};
+  private rtpBuilder = new RtpBuilder({ between: 20, clockRate: 48000 });
 
   static async init(...args: ConstructorParameters<typeof OpenAIWebRTC>) {
     const instance = new OpenAIWebRTC(...args);
@@ -25,6 +28,11 @@ export class OpenAIWebRTC {
       this.props.onInboundTrack(e.track);
     };
     this.datachannel = this.pc.createDataChannel("oai-events");
+    this.pc.connectionStateChange.subscribe(() => {
+      if (this.pc.connectionState === "closed") {
+        this.onclosed();
+      }
+    });
   }
 
   private async init() {
@@ -49,5 +57,11 @@ export class OpenAIWebRTC {
       sdp: await sdpResponse.text(),
     } as const;
     await this.pc.setRemoteDescription(answer);
+  }
+
+  writeOpusFrame(opus: Buffer) {
+    const rtp = this.rtpBuilder.create(opus);
+    rtp.header.marker = true;
+    this.outboundTrack.writeRtp(rtp);
   }
 }
