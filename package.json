@@ -1,6 +1,6 @@
 {
-  "name": "openai-realtime-webrtc-nodejs",
-  "version": "1.0.0",
+  "name": "@werift/openai-webrtc",
+  "version": "0.0.1",
   "description": "openai-realtime-webrtc for node.js",
   "keywords": [],
   "homepage": "https://github.com/shinyoshiaki/openai-realtime-webrtc-nodejs#readme",
@@ -14,8 +14,21 @@
   "license": "ISC",
   "author": "",
   "type": "module",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "module": "lib/index.mjs",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "README.md"
+  ],
   "scripts": {
+    "build": "run-s compile:type compile:esm compile:cjs",
+    "compile:cjs": "esbuild src/index.ts --platform=node --format=cjs --target=es2022 --outfile=lib/index.js",
+    "compile:esm": "esbuild src/index.ts --platform=node --format=esm --target=es2022 --outfile=lib/index.mjs",
+    "compile:type": "rm -rf lib && tsc -p tsconfig.production.json --emitDeclarationOnly",
+    "deploy": "npm run build && npm publish --access public",
+    "lint": "biome check --write src",
+    "type": "tsc -p ./tsconfig.json --noEmit",
     "client": "tsx examples/client/main.ts",
     "server": "tsx -r dotenv/config examples/server/main.ts"
   },
@@ -29,6 +42,7 @@
     "@biomejs/biome": "^1.9.4",
     "@discordjs/opus": "^0.9.0",
     "@types/express": "^5.0.0",
+    "esbuild": "^0.24.2",
     "express": "^4.21.2",
     "npm-run-all2": "^7.0.2",
     "parcel": "^2.13.3",
