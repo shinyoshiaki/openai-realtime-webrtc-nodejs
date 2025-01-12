@@ -1,7 +1,7 @@
 import Speaker from "speaker";
 import opus from "@discordjs/opus";
 
-import { RealtimeWebRTC } from "../../src/index.js";
+import { OpenAIWebRTC } from "../../src/index.js";
 
 const encoder = new opus.OpusEncoder(48000, 2);
 const speaker = new Speaker({
@@ -16,7 +16,7 @@ const {
   client_secret: { value },
 } = data;
 
-const session = await RealtimeWebRTC.init({
+const session = await OpenAIWebRTC.init({
   token: value,
   onInboundTrack: (track) => {
     track.onReceiveRtp.subscribe((rtp) => {

@@ -4,13 +4,13 @@ import {
   type RTCDataChannel,
 } from "werift";
 
-export class RealtimeWebRTC {
+export class OpenAIWebRTC {
   readonly pc = new RTCPeerConnection();
   readonly outboundTrack = new MediaStreamTrack({ kind: "audio" });
   readonly datachannel: RTCDataChannel;
 
-  static async init(...args: ConstructorParameters<typeof RealtimeWebRTC>) {
-    const instance = new RealtimeWebRTC(...args);
+  static async init(...args: ConstructorParameters<typeof OpenAIWebRTC>) {
+    const instance = new OpenAIWebRTC(...args);
     await instance.init();
     return instance;
   }
