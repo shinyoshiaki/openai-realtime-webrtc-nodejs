@@ -1,7 +1,7 @@
 import Speaker from "speaker";
 import opus from "@discordjs/opus";
 
-import { OpenAIWebRTC } from "../../src/index.js";
+import { OpenAIWebRTC } from "@werift/openai-webrtc";
 
 const encoder = new opus.OpusEncoder(48000, 2);
 const speaker = new Speaker({
