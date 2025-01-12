@@ -41,7 +41,7 @@ session.datachannel.onopen = () => {
       type: "response.create",
       response: {
         modalities: ["audio", "text"],
-        instructions: "挨拶をしてください",
+        instructions: "say hello",
       },
     }),
   );
