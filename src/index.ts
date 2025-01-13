@@ -64,4 +64,15 @@ export class OpenAIWebRTC {
     rtp.header.marker = true;
     this.outboundTrack.writeRtp(rtp);
   }
+
+  writeRtp(rtp: Buffer) {
+    this.outboundTrack.writeRtp(rtp);
+  }
+
+  sendMessage(message: {
+    type: string;
+    [key: string]: any;
+  }) {
+    this.datachannel.send(JSON.stringify(message));
+  }
 }
