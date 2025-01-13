@@ -1,6 +1,12 @@
 # openai-realtime-webrtc-nodejs
 openai-realtime-webrtc for node.js
 
+## Installation
+
+```sh
+npm i @werift/openai-webrtc
+```
+
 ## Setup and Run
 
 1. Ensure you have Node.js installed.
