@@ -1,6 +1,6 @@
 {
   "name": "@werift/openai-webrtc",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "openai-realtime-webrtc for node.js",
   "keywords": [],
   "homepage": "https://github.com/shinyoshiaki/openai-realtime-webrtc-nodejs#readme",
@@ -60,5 +60,6 @@
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",
     "zx": "^8.3.0"
-  }
+  },
+  "packageManager": "npm@10.9.0"
 }

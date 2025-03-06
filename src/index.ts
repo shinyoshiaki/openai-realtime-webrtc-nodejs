@@ -1,12 +1,13 @@
 import {
-  RTCPeerConnection,
   MediaStreamTrack,
+  type PeerConfig,
   type RTCDataChannel,
+  RTCPeerConnection,
   RtpBuilder,
 } from "werift";
 
 export class OpenAIWebRTC {
-  readonly pc = new RTCPeerConnection();
+  readonly pc: RTCPeerConnection;
   readonly outboundTrack = new MediaStreamTrack({ kind: "audio" });
   readonly datachannel: RTCDataChannel;
   onclosed: () => any = () => {};
@@ -22,8 +23,10 @@ export class OpenAIWebRTC {
     private props: {
       token: string;
       onInboundTrack: (track: MediaStreamTrack) => void;
+      peerConfig?: PeerConfig;
     },
   ) {
+    this.pc = new RTCPeerConnection(props.peerConfig);
     this.pc.ontrack = (e) => {
       this.props.onInboundTrack(e.track);
     };
