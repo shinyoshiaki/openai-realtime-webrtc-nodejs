@@ -23,7 +23,7 @@ export class OpenAIWebRTC {
     private props: {
       token: string;
       onInboundTrack: (track: MediaStreamTrack) => void;
-      peerConfig?: PeerConfig;
+      peerConfig?: Partial<PeerConfig>;
     },
   ) {
     this.pc = new RTCPeerConnection(props.peerConfig);

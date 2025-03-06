@@ -1,6 +1,6 @@
 {
   "name": "@werift/openai-webrtc",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "openai-realtime-webrtc for node.js",
   "keywords": [],
   "homepage": "https://github.com/shinyoshiaki/openai-realtime-webrtc-nodejs#readme",
