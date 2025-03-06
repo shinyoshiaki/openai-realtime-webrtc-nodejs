@@ -1,6 +1,6 @@
 {
   "name": "@werift/openai-webrtc",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "openai-realtime-webrtc for node.js",
   "keywords": [],
   "homepage": "https://github.com/shinyoshiaki/openai-realtime-webrtc-nodejs#readme",
@@ -16,9 +16,9 @@
   "type": "module",
   "exports": {
     ".": {
+      "types": "./lib/index.d.ts",
       "require": "./lib/index.js",
-      "import": "./lib/index.mjs",
-      "types": "./lib/index.d.ts"
+      "import": "./lib/index.mjs"
     }
   },
   "files": [
@@ -61,5 +61,5 @@
     "typescript": "^5.7.3",
     "zx": "^8.3.0"
   },
-  "packageManager": "npm@10.9.0"
+  "packageManager": "npm@10.9.2"
 }
